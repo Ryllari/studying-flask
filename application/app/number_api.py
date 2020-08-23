@@ -3,10 +3,10 @@ import json
 from flask import Blueprint, jsonify, request
 from werkzeug.exceptions import abort, HTTPException
 
-from .api_utils import create_did_number, update_did_number
+from .utils import create_instance, update_instance
 from .models import DIDNumber
 from .paginator import paginate
-from .validators import validate_request_data
+from .validators import validate_number_request_data
 
 bp = Blueprint('number', __name__)
 
@@ -24,14 +24,14 @@ def handle_exception(e):
 
 
 @bp.route('/', methods=['GET', 'POST'])
-@validate_request_data
+@validate_number_request_data
 def list_numbers():
-    # Create a new DID Number
+    # Create a new DID Number on DB
     if request.method == 'POST':
-        created = create_did_number(request.json)
+        created = create_instance(request.json)
         return jsonify(created), 201
 
-    # GET - List all DID Number
+    # GET - List all DID Number on DB
     try:
         page = int(request.args.get('page', 1))
         per_page = int(request.args.get('per_page', 20))
@@ -43,15 +43,15 @@ def list_numbers():
 
 
 @bp.route('/<int:pk>/', methods=['GET', 'PUT', 'PATCH', 'DELETE'])
-@validate_request_data
+@validate_number_request_data
 def manage_number(pk):
     number = DIDNumber.query.get_or_404(pk)
 
-    # Update a DID Number
+    # Update a DID Number on DB
     if request.method in ["PUT", "PATCH"]:
-        return jsonify(update_did_number(number, request.json))
+        return jsonify(update_instance(number, request.json))
 
-    # Update a DID Number
+    # Update a DID Number on DB
     if request.method == "DELETE":
         number.delete()
         return {}, 204

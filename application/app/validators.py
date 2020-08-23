@@ -3,10 +3,10 @@ from decimal import Decimal
 from flask import request
 from functools import wraps
 
-from .api_utils import bad_request_error
+from .utils import bad_request_error
 
 
-def validate_request_data(f):
+def validate_number_request_data(f):
     @wraps(f)
     def wrapper(*args, **kwargs):
         if request.method in ['POST', 'PUT', 'PATCH']:
