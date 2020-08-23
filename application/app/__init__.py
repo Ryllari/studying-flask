@@ -12,7 +12,7 @@ def create_app():
     config_db(app)
     Migrate(app, app.db)
 
-    from app import api
+    from . import api
     app.register_blueprint(api.bp)
 
     return app
