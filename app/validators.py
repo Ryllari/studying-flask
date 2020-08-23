@@ -7,7 +7,7 @@ from .api_utils import bad_request_error
 def validate_request_data(f):
     @wraps(f)
     def wrapper(*args, **kwargs):
-        if request.method in ['POST', 'PUT']:
+        if request.method in ['POST', 'PUT', 'PATCH']:
             number_fields = ['id', 'value', 'monthyPrice', 'setupPrice', 'currency']
 
             # Verify if is a valid json
@@ -21,7 +21,7 @@ def validate_request_data(f):
 
             # Verify missing fields
             missing_fields = [field for field in number_fields if field not in data]
-            if missing_fields:
+            if missing_fields and request.method != 'PATCH':
                 raise bad_request_error(f'Missing fields: {missing_fields}')
 
         return f(*args, **kwargs)

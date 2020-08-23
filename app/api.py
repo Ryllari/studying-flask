@@ -42,13 +42,13 @@ def list_numbers():
     return jsonify(dict(response_data))
 
 
-@bp.route('/<int:pk>/', methods=['GET', 'PUT', 'DELETE'])
+@bp.route('/<int:pk>/', methods=['GET', 'PUT', 'PATCH', 'DELETE'])
 @validate_request_data
 def manage_number(pk):
     number = DIDNumber.query.get_or_404(pk)
 
     # Update a DID Number
-    if request.method == "PUT":
+    if request.method in ["PUT", "PATCH"]:
         return jsonify(update_did_number(number, request.json))
 
     # Update a DID Number
