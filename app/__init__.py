@@ -1,5 +1,6 @@
 from flask import Flask
 from flask_migrate import Migrate
+
 from .models import config_db
 
 
@@ -10,5 +11,8 @@ def create_app():
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     config_db(app)
     Migrate(app, app.db)
+
+    from app import api
+    app.register_blueprint(api.bp)
 
     return app
