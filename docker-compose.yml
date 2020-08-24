@@ -4,32 +4,26 @@ services:
   web:
     build: ./application
     container_name: flask-api
-    command: flask run -h 0.0.0.0
-    volumes:
-      - ./application/:/usr/src/app/
+    command: bash -c 'flask db upgrade head && flask run -h 0.0.0.0'
     ports:
       - 5000:5000
     env_file:
       - ./.env.dev
     depends_on:
       - db
-    environment:
-      DB_URI: postgresql://test_user:qwer1234@db:5432/api_db
-    networks:
-      - ryllari_net
+    links:
+      - db
   db:
     image: postgres:12-alpine
     volumes:
       - postgres_data:/var/lib/postgresql/data/
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: api_db
-    networks:
-      - ryllari_net
+    healthcheck:
+      test: "pg_isready -h localhost -p 5432 -q -U postgres -d postgres"
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    env_file:
+      - ./.env.db
 
 volumes:
   postgres_data:
-
-networks:
-  ryllari_net:

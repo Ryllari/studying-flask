@@ -6,7 +6,6 @@ WORKDIR /usr/src/app
 # set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
-ENV DB_URI postgresql://postgres:postgres@db:5432/api_db
 
 # install dependencies
 RUN pip install --upgrade pip
@@ -15,6 +14,3 @@ RUN pip install -r requirements.txt
 
 # copy project
 COPY . /usr/src/app/
-
-
-RUN flask db upgrade
