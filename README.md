@@ -1,5 +1,5 @@
 # studying-flask
-Flask API
+Flask RESTful API with JWT Authentication 
 
 ### API Documentation
 Access the API Documentation, with examples and importants informations [here](https://documenter.getpostman.com/view/12464969/T1LVA4k8?version=latest)
