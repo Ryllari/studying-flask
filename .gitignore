@@ -1,6 +1,7 @@
 *.pyc
 htmlcov
 .coverage
+.env.dev
 
 # PyCharm
 .idea
