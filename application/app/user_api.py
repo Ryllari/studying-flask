@@ -46,7 +46,7 @@ def create_token():
     password = request.json.get('password')
     user = User.query.filter_by(username=username).first()
 
-    if user and user.verify_password(password):
+    if user and password and user.verify_password(password):
         access_token = create_access_token(
             identity=user.id,
             expires_delta=timedelta(days=1)
