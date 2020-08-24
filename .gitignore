@@ -2,6 +2,7 @@
 htmlcov
 .coverage
 .env.dev
+.env.db
 
 # PyCharm
 .idea
