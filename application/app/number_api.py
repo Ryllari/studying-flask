@@ -1,6 +1,7 @@
 import json
 
 from flask import Blueprint, jsonify, request
+from flask_jwt_extended import jwt_required
 from werkzeug.exceptions import abort, HTTPException
 
 from .utils import create_instance, update_instance
@@ -24,6 +25,7 @@ def handle_exception(e):
 
 
 @bp.route('/', methods=['GET', 'POST'])
+@jwt_required
 @validate_number_request_data
 def list_numbers():
     # Create a new DID Number on DB
@@ -43,6 +45,7 @@ def list_numbers():
 
 
 @bp.route('/<int:pk>/', methods=['GET', 'PUT', 'PATCH', 'DELETE'])
+@jwt_required
 @validate_number_request_data
 def manage_number(pk):
     number = DIDNumber.query.get_or_404(pk)

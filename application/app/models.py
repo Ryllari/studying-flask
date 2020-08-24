@@ -1,4 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
+from passlib.apps import custom_app_context as pwd_context
 
 db = SQLAlchemy()
 
@@ -33,4 +34,29 @@ class DIDNumber(db.Model):
             "monthyPrice": str(self.monthyPrice),
             "setupPrice": str(self.setupPrice),
             "currency": self.currency
+        }
+
+
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(20), index=True, nullable=False)
+    password = db.Column(db.String(255), nullable=False)
+
+    def __repr__(self):
+        return f'<[{self.id}] User - {self.username}>'
+
+    def hash_password(self, password):
+        self.password = pwd_context.encrypt(password)
+
+    def verify_password(self, password):
+        return pwd_context.verify(password, self.password)
+
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def as_dict(self):
+        return {
+            "id": self.id,
+            "username": self.username
         }

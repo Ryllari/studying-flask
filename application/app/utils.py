@@ -4,7 +4,7 @@ from .models import DIDNumber
 
 
 def create_instance(data):
-    if DIDNumber.query.get(int(data["id"])):
+    if DIDNumber.query.filter_by(id=int(data["id"])).first():
         raise bad_request_error("DID Number with this id already exists")
     number = DIDNumber(
         id=data["id"],
@@ -35,4 +35,10 @@ def update_instance(number, data):
 def bad_request_error(description):
     error = HTTPException(description=description)
     error.code = 400
+    return error
+
+
+def unauthorized_error(description):
+    error = HTTPException(description=description)
+    error.code = 401
     return error

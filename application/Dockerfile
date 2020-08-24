@@ -15,4 +15,5 @@ RUN pip install -r requirements.txt
 # copy project
 COPY . /usr/src/app/
 
+RUN flask db stamp head
 RUN flask db upgrade

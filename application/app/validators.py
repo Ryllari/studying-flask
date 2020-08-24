@@ -38,3 +38,23 @@ def validate_number_request_data(f):
 
         return f(*args, **kwargs)
     return wrapper
+
+
+def validate_user_request_data(f):
+    @wraps(f)
+    def wrapper(*args, **kwargs):
+        # Verify if is a valid json
+        data = request.json or {}
+        if not data:
+            raise bad_request_error('Request body must be a valid json')
+
+        # Verify missing fields
+        missing_fields = [field for field in ['username', 'password'] if field not in data]
+        if missing_fields:
+            raise bad_request_error(f'Missing fields: {missing_fields}')
+
+        if not (request.json.get('username') and request.json.get('password')):
+            raise bad_request_error('Invalid data format')
+
+        return f(*args, **kwargs)
+    return wrapper
