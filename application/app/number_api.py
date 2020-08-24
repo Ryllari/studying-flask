@@ -50,11 +50,11 @@ def list_numbers():
 def manage_number(pk):
     number = DIDNumber.query.get_or_404(pk)
 
-    # Update a DID Number on DB
+    # PUT/PATCH - Update a DID Number on DB
     if request.method in ["PUT", "PATCH"]:
         return jsonify(update_instance(number, request.json))
 
-    # Update a DID Number on DB
+    # DELETE - Delete a DID Number on DB
     if request.method == "DELETE":
         number.delete()
         return {}, 204

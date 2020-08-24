@@ -13,10 +13,8 @@ def create_instance(data):
         setupPrice=data["setupPrice"],
         currency=data["currency"]
     )
-    try:
-        number.save()
-    except (TypeError, ValueError):
-        raise bad_request_error('Invalid data format')
+    number.save()
+
     return number.as_dict()
 
 
@@ -25,20 +23,12 @@ def update_instance(number, data):
     number.monthyPrice = data.get("monthyPrice", number.monthyPrice)
     number.setupPrice = data.get("setupPrice", number.setupPrice)
     number.currency = data.get("currency", number.currency)
-    try:
-        number.save()
-    except (TypeError, ValueError):
-        raise bad_request_error('Invalid data format')
+    number.save()
+
     return number.as_dict()
 
 
 def bad_request_error(description):
     error = HTTPException(description=description)
     error.code = 400
-    return error
-
-
-def unauthorized_error(description):
-    error = HTTPException(description=description)
-    error.code = 401
     return error

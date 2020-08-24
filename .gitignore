@@ -1,4 +1,6 @@
 *.pyc
+htmlcov
+.coverage
 
 # PyCharm
 .idea
