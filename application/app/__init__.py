@@ -7,10 +7,11 @@ from flask_migrate import Migrate
 from .models import config_db
 
 
-def create_app():
+def create_app(testing=False):
     app = Flask(__name__)
-
     app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DB_URI", 'postgresql://postgres:postgres@db:5432/api_db')
+    if testing:
+        app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:////tmp/crudzin.db"
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['JWT_SECRET_KEY'] = 'blabla'
 
